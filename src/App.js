@@ -84,6 +84,7 @@ class App extends Component {
         </header>
 
         <div className="sidenav">
+          <h2>History</h2>
           {amount.length > 0 ?
             amount.map((history, index) => (
               <div
