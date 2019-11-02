@@ -24,7 +24,7 @@ There is one single page which consists of two component
 
 When ever we calculate interest rate that value is store in local storage and is displayed in sidebar.when we click on any item in side bar that value is displayed in interest calculator and interest rate is calculated.
 
-By the help of axios get we are getting interest rate and monthly payment.
+By the help of axios we are getting interest rate and monthly payment.
 
 ### sidebar
 
