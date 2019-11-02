@@ -1,68 +1,85 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Assignment
 
-## Available Scripts
+## Problem Statement
 
-In the project directory, you can run:
+Design and implement a user interface that allows a user to enter a loan amount and  loan duration in months which then displays the interest rate and the monthly payment.
 
-### `npm start`
+The user must be able to enter (at least) the monetary amount by using a slider.  
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The calculated values should automatically update as the slider is used -without requiring any further interaction by the user.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Cache the recent input values in localstorage and Implement a sidebar which has the history of the loan-amount and duration combinations used before and upon clicking on which the input fields shall be populated and the result is obtained.
 
-### `npm test`
+The loan amount should be between $500 and $5000 and the loan duration between 6 and 24 months.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You should use the following API - https://ftl-frontend-test.herokuapp.com/interest?
+amount={amount}&numMonths={numMonths}
 
-### `npm run build`
+## Solution
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+There is one single page which consists of two component
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+* SideBar
+* Interest Calculator 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When ever we calculate interest rate that value is store in local storage and is displayed in sidebar.when we click on any item in side bar that value is displayed in interest calculator and interest rate is calculated.
 
-### `npm run eject`
+By the help of axios get we are getting interest rate and monthly payment.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### sidebar
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+It consist of one parent div and many child div in each child div there is 3 things 
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* label to display loan amount
+* label to display loan month
+* horizontal bar to separate two div 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```html
+<div className="sidenav">
+    <h2>History</h2>
+    {amount.length > 0 ?
+    amount.map((history, index) => (
+        <div
+            key={index}
+            data-div_amount={history}
+            data-div_month={month[index]}
+            onClick={this.calculateFromHistory}>
+            <label>Loan Amount - {history}</label>
+            <label>Loan Month - {month[index]}</label>
+            <hr></hr>
+        </div>)) : "History"}
+</div>
+```
 
-## Learn More
+### Interest Calculator
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+It consist of one parent div and inside that parent div there are 6 things 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* label to display loan amount.
+* Range selector for loan amount.
+* label to display loan month.
+* Range selector for loan month.
+* label to show interest rate.
+* label to show monthly payment. 
 
-### Code Splitting
+```html
+<div className="main">
+    <label id="amountRangeLabel">Loan Amount - $500</label>
+    <div className="slidecontainer">
+        <input type="range" min="500" max="5000" className="slider" id="amountRange" onMouseUp={this.calculate.bind(this)} onChange={this.show}></input>
+    </div>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+    {/*Label & Range Month*/}
+    <label id="monthRangeLabel">Loan Month - 24</label>
+    <div className="slidecontainer">
+        <input type="range" min="6" max="24" className="slider" id="monthRange" onMouseUp={this.calculate.bind(this)} onChange={this.show} ></input>
+    </div>
 
-### Analyzing the Bundle Size
+    {/* Interest Rate*/}
+    <label id="rate">Interest Rate - 0.25</label>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+    {/*Monthly Payment */}
+    <label id="payment">Monthly Payment - $31</label>
+</div>
+```
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

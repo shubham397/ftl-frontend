@@ -24,6 +24,7 @@ class App extends Component {
 
   }
 
+  // by the help of this function we are going to show the value of range in label
   show(event) {
     if (event.target.id === "amountRange") {
       document.getElementById("amountRangeLabel").innerHTML = "Loan Amount - $" + event.target.value;
@@ -33,6 +34,7 @@ class App extends Component {
     }
   }
 
+  // by the help of this function we are going to calculate interest rate & monthly payment
   calculate() {
     var loanAmount = document.getElementById("amountRange").value;
     var loanMonth = document.getElementById("monthRange").value;
@@ -42,6 +44,7 @@ class App extends Component {
     localStorage.setItem('amount', this.state.amount);
     localStorage.setItem('month', this.state.month);
 
+    {/*Axios*/ }
     axios.get("https://ftl-frontend-test.herokuapp.com/interest?amount=" + loanAmount + "&numMonths=" + loanMonth)
       .then(res => {
         console.log(res);
@@ -53,6 +56,7 @@ class App extends Component {
       });
   }
 
+  // by the help of this function we are going to calculate interest rate & monthly payment from history
   calculateFromHistory = ev => {
     var historyAmount = `${ev.currentTarget.dataset.div_amount}`;
     var historyMonth = `${ev.currentTarget.dataset.div_month}`;
@@ -63,6 +67,7 @@ class App extends Component {
     document.getElementById("amountRangeLabel").innerHTML = "Loan Amount - $" + historyAmount;
     document.getElementById("monthRangeLabel").innerHTML = "Loan Month - " + historyMonth;
 
+    {/*Axios*/ }
     axios.get("https://ftl-frontend-test.herokuapp.com/interest?amount=" + historyAmount + "&numMonths=" + historyMonth)
       .then(res => {
         console.log(res);
@@ -83,6 +88,7 @@ class App extends Component {
           <p>WELCOME</p>
         </header>
 
+        {/* Sidebar */}
         <div className="sidenav">
           <h2>History</h2>
           {amount.length > 0 ?
@@ -98,19 +104,23 @@ class App extends Component {
               </div>)) : "History"}
         </div>
 
+        {/*Label & Range Amount*/}
         <div className="main">
           <label id="amountRangeLabel">Loan Amount - $500</label>
           <div className="slidecontainer">
             <input type="range" min="500" max="5000" className="slider" id="amountRange" onMouseUp={this.calculate.bind(this)} onChange={this.show}></input>
           </div>
 
+          {/*Label & Range Month*/}
           <label id="monthRangeLabel">Loan Month - 24</label>
           <div className="slidecontainer">
             <input type="range" min="6" max="24" className="slider" id="monthRange" onMouseUp={this.calculate.bind(this)} onChange={this.show} ></input>
           </div>
 
+          {/* Interest Rate*/}
           <label id="rate">Interest Rate - 0.25</label>
 
+          {/*Monthly Payment */}
           <label id="payment">Monthly Payment - $31</label>
         </div>
 
